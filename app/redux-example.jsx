@@ -29,9 +29,25 @@ console.log('Starting redux example');
 var reducer = (state = {name: 'Anonymous'}, action) => {
     // state = state || {name: 'Anonymous'};
 
-    return state;
+    switch (action.type) {
+        case 'CHANGE_NAME':
+            return {
+                ...state,
+                name: action.name
+            };
+        default:
+            return state;
+    }
 };
 var store = redux.createStore(reducer);
 
 var currentSate = store.getState();
 console.log('currentState', currentSate);
+
+store.dispatch({
+    type: 'CHANGE_NAME',
+    name: 'Andrew'
+});
+console.log('Name should be Andrew', store.getState());
+
+
