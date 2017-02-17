@@ -2,30 +2,6 @@ var redux = require('redux');
 
 console.log('Starting redux example');
 
-// // Pure function
-// function add(a, b) {
-//     return a + b;
-// }
-
-// function changeProp(obj) {
-//     return {
-//         ...obj,
-//         name: 'Jen'
-//     };
-//     // obj.name = 'Jen';
-//     // return obj;
-// }
-
-// var startingValue = {
-//     name:'Alonso',
-//     age: '27'
-// };
-//
-// var res = changeProp(startingValue);
-// console.log(startingValue);
-// console.log(res);
-
-
 var reducer = (state = {name: 'Anonymous'}, action) => {
     // state = state || {name: 'Anonymous'};
 
@@ -39,7 +15,17 @@ var reducer = (state = {name: 'Anonymous'}, action) => {
             return state;
     }
 };
-var store = redux.createStore(reducer);
+var store = redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+// Subsribe to changes
+var unsubscribe = store.subscribe(() => {
+   var state = store.getState();
+
+    console.log('Name is ', state.name);
+    document.getElementById('app').innerHTML = state.name;
+});
+// unsubscribe();
 
 var currentSate = store.getState();
 console.log('currentState', currentSate);
@@ -48,6 +34,12 @@ store.dispatch({
     type: 'CHANGE_NAME',
     name: 'Andrew'
 });
-console.log('Name should be Andrew', store.getState());
+
+
+
+store.dispatch({
+   type: 'CHANGE_NAME',
+    name: 'Emily'
+});
 
 
